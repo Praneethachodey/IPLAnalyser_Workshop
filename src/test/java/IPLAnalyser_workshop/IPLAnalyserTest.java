@@ -65,5 +65,18 @@ public class IPLAnalyserTest {
 
 	        }
 	    }
+	 
+	 @Test
+	    public void givenData_whenSortedonStrikingRate_shouldReturnHighestBoundary() {
+	        try {
+	            IPLAnalyser.loadIPLData(IPL_CSV_RUNS_FILE_PATH);
+	            String sortedIPLData = IPLAnalyser.getPlayersWithTopStrikingRateAndBoundary();
+	            IPLMostRuns[] iplRuns = new Gson().fromJson(sortedIPLData, IPLMostRuns[].class);
+	            Assert.assertEquals("Andre Russell", iplRuns[0].player);
+	        } catch (IPLException e) {
+	            e.printStackTrace();
+
+	        }
+	    }
 
 }
