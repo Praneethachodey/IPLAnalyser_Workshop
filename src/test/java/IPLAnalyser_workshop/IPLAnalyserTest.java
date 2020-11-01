@@ -128,6 +128,19 @@ public class IPLAnalyserTest {
 
 	        }
 	    }
+	 
+	 @Test
+	    public void givenData_whenSortedOnEconomyRate_ShouldReturnBowlerWithHighestEconomy() {
+	        try {
+	            IPLAnalyser.loadIPLDataWkts(IPL_CSV_WKTS_FILE_PATH);
+	            String sortedIPLData = IPLAnalyser.getBowlersWithHighestEconomy();
+	            IPLMostWickets[] iplRuns = new Gson().fromJson(sortedIPLData, IPLMostWickets[].class);
+	            Assert.assertEquals("Ben Cutting", iplRuns[0].player);
+	        } catch (IPLException e) {
+	            e.printStackTrace();
+
+	        }
+	    }
 
 
 }

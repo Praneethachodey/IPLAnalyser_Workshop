@@ -211,7 +211,7 @@ public class IPLAnalyser {
 	public static String getBowlersWithHighestStrikingRate() throws IPLException {
 		try (Writer writer = new FileWriter("./src/test/resources/IPLBowlingBestSR.json")) {
             if (IPLCSVWickets == null || IPLCSVWickets.size() == 0) {
-                throw new IPLException("Empty!!!", IPLException.ExceptionType.NO_DATA);
+                throw new IPLException("The file contains no data", IPLException.ExceptionType.NO_DATA);
             }
             Comparator<IPLMostWickets> iplComparator = Comparator.comparing(iplWickets -> iplWickets.strikeRate);
             descendingSortWickets(iplComparator);
@@ -238,5 +238,24 @@ public class IPLAnalyser {
 	            }
 	        }
 	    }
+
+	public static String getBowlersWithHighestEconomy() throws IPLException {
+		try (Writer writer = new FileWriter("./src/test/resources/IPLBowlingBestEconomy.json")) {
+            if (IPLCSVWickets == null || IPLCSVWickets.size() == 0) {
+                throw new IPLException("The file contains no data", IPLException.ExceptionType.NO_DATA);
+            }
+            Comparator<IPLMostWickets> iplComparator = Comparator.comparing(iplWickets -> iplWickets.economy);
+            descendingSortWickets(iplComparator);
+            String json = new Gson().toJson(IPLCSVWickets);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(IPLCSVWickets, writer);
+            return json;
+
+        } catch (RuntimeException | IOException e) {
+            throw new IPLException(e.getMessage(),
+                    IPLException.ExceptionType.FILE_OR_HEADER_PROBLEM);
+        }
+
+    }
 
 }
