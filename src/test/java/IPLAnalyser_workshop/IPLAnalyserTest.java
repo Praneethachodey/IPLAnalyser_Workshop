@@ -192,6 +192,18 @@ public class IPLAnalyserTest {
 	        Assert.assertEquals("MS Dhoni",average[0].player
 	        		);
 	    }
+	 
+	 @Test
+	    public void givenData_whenSortedOnBowlingAndBattingAverages_ShouldReturnBestAllRounderPlayer() throws IPLException {
+	        IPLAnalyser.loadIPLDataWkts(IPL_CSV_WKTS_FILE_PATH);
+	        String sorted = IPLAnalyser.getBowlersWithMaxWickets();
+	        IPLMostWickets[] wickets = new Gson().fromJson(sorted, IPLMostWickets[].class);
+	        IPLAnalyser.loadIPLData(IPL_CSV_RUNS_FILE_PATH);
+	        String sortedBat = IPLAnalyser.getPlayersWithMaxRunsAndAverage();
+	        IPLMostRuns[] runs = new Gson().fromJson(sortedBat, IPLMostRuns[].class);
+	        String bestAllRounder = IPLAnalyser.getBestAllRounder(runs, wickets);
+	        Assert.assertEquals("Andre Russell", bestAllRounder);
+	    }
 
 
 }

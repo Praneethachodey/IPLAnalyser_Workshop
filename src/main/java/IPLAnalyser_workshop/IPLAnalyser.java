@@ -327,4 +327,32 @@ public class IPLAnalyser {
 		}
 
 }
+
+	public static String getBowlersWithMaxWickets() throws IPLException {
+		try (Writer writer = new FileWriter("./src/test/resources/IPLBowlingMostWickets.json")) {
+            if (IPLCSVWickets == null || IPLCSVWickets.size() == 0) {
+                throw new IPLException("The file contains no data", IPLException.ExceptionType.NO_DATA);
+            }
+            Comparator<IPLMostWickets> iplComparator = Comparator.comparing(IPLMostWickets::getWickets).thenComparing(IPLMostWickets::getAvg);
+            descendingSortWickets(iplComparator);
+            String json = new Gson().toJson(IPLCSVWickets);
+            Gson gson = new GsonBuilder().create();
+            gson.toJson(IPLCSVWickets, writer);
+            return json;
+
+        } catch (RuntimeException | IOException e) {
+            throw new IPLException(e.getMessage(),
+                    IPLException.ExceptionType.FILE_OR_HEADER_PROBLEM);
+        }
+    }
+
+	public static String getBestAllRounder(IPLMostRuns[] runs, IPLMostWickets[] wickets) {
+		for (int positionOfRuns = 0; positionOfRuns < runs.length; positionOfRuns++) {
+            for (int positionOfWickets = wickets.length - 1; positionOfWickets >= 0; positionOfWickets--)
+                if (runs[positionOfRuns].player.equals(wickets[positionOfWickets].player)) {
+                    return runs[positionOfRuns].player;
+                }
+        }
+        return null;
+    }
 }
