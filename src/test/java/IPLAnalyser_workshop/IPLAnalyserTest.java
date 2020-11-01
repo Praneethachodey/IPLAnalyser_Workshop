@@ -8,7 +8,7 @@ import com.google.gson.Gson;
 
 public class IPLAnalyserTest {
 	private static final String IPL_CSV_RUNS_FILE_PATH = "./src/test/resources/IPL2019FactsheetMostRuns.csv";
-	private static final String IPL_CSV_WKTS_FILE_PATH = "./src/test/resources/IPL2019FactsheetMostWkts.csv";
+	private static final String IPL_CSV_WKTS_FILE_PATH = "./src/test/resources/WP DP Data_02 IPL2019FactsheetMostWkts.csv";
 
 	@Before
 	public void welcomeMessage()
@@ -105,5 +105,16 @@ public class IPLAnalyserTest {
 
 	        }
 	    }
+	 
+	 @Test
+	    public void givenIPLRunsWicketsFile_whenLoaded_shouldMatchRecordSizeCorrectly() {
+	        try {
+	            int numOfRecords = IPLAnalyser.loadIPLDataWkts(IPL_CSV_WKTS_FILE_PATH);
+	            Assert.assertEquals(99, numOfRecords);
+	        } catch (IPLException e) {
+	            e.printStackTrace();
+	        }
+	    }
+
 
 }
