@@ -180,6 +180,18 @@ public class IPLAnalyserTest {
 
 	        }
 	    }
+	 
+	 @Test
+	    public void givenData_whenSortedOnBowlingAndBatting_ShouldReturnTopPlayer() throws IPLException {
+	        IPLAnalyser.loadIPLDataWkts(IPL_CSV_WKTS_FILE_PATH);
+	        String sorted = IPLAnalyser.getBowlersWithTopAverage();
+	        IPLMostWickets[] wickets = new Gson().fromJson(sorted, IPLMostWickets[].class);
+	        IPLAnalyser.loadIPLData(IPL_CSV_RUNS_FILE_PATH);
+	        String sortedBat = IPLAnalyser.getPlayersWithTopAverages();
+	        IPLMostRuns[] average = new Gson().fromJson(sortedBat, IPLMostRuns[].class);
+	        Assert.assertEquals("MS Dhoni",average[0].player
+	        		);
+	    }
 
 
 }
