@@ -167,6 +167,19 @@ public class IPLAnalyserTest {
 
 	        }
 	    }
+	 
+	 @Test
+	    public void givenData_whenSortedOnwickets_ShouldReturnBowlerWithMaxAvg() {
+	        try {
+	            IPLAnalyser.loadIPLDataWkts(IPL_CSV_WKTS_FILE_PATH);
+	            String sortedIPLData = IPLAnalyser.getBowlersWithMaxWicketsAndAvg();
+	            IPLMostWickets[] iplRuns = new Gson().fromJson(sortedIPLData, IPLMostWickets[].class);
+	            Assert.assertEquals("Imran Tahir", iplRuns[0].player);
+	        } catch (IPLException e) {
+	            e.printStackTrace();
+
+	        }
+	    }
 
 
 }
