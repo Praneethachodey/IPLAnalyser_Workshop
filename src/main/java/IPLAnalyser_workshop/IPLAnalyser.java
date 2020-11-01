@@ -61,7 +61,7 @@ public class IPLAnalyser {
 	}
 
 	/**
-	 *  
+	 * 
 	 * @return json with sorted players on striking rates
 	 * @throws IPLException
 	 */
@@ -80,7 +80,7 @@ public class IPLAnalyser {
 			throw new IPLException(e.getMessage(), IPLException.ExceptionType.FILE_OR_HEADER_PROBLEM);
 		}
 	}
-	
+
 	/**
 	 * 
 	 * @return json with sorted players on borders
@@ -88,23 +88,69 @@ public class IPLAnalyser {
 	 */
 	public static String getPlayersWithTop6sAnd4s() throws IPLException {
 		try (Writer writer = new FileWriter("./src/test/resources/IPLBattingBoundary.json")) {
-            if (IPLCSVRuns == null || IPLCSVRuns.size() == 0) {
-                throw new IPLException("The file contains no data", IPLException.ExceptionType.NO_DATA);
-            }
-            Comparator<IPLMostRuns> iplComparator = Comparator.comparing(census -> census.fours + census.sixes);
-            descendingSort(iplComparator);
-            String json = new Gson().toJson(IPLCSVRuns);
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            gson.toJson(IPLCSVRuns, writer);
-            return json;
+			if (IPLCSVRuns == null || IPLCSVRuns.size() == 0) {
+				throw new IPLException("The file contains no data", IPLException.ExceptionType.NO_DATA);
+			}
+			Comparator<IPLMostRuns> iplComparator = Comparator.comparing(census -> census.fours + census.sixes);
+			descendingSort(iplComparator);
+			String json = new Gson().toJson(IPLCSVRuns);
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			gson.toJson(IPLCSVRuns, writer);
+			return json;
 
-        } catch (RuntimeException | IOException e) {
-            throw new IPLException(e.getMessage(),
-                    IPLException.ExceptionType.FILE_OR_HEADER_PROBLEM);
-        }
+		} catch (RuntimeException | IOException e) {
+			throw new IPLException(e.getMessage(), IPLException.ExceptionType.FILE_OR_HEADER_PROBLEM);
+		}
+
+	}
+	
+	/**
+	 * 
+	 * @return json with sorted players on striking rate and boundaries
+	 * @throws IPLException
+	 */
+	public static String getPlayersWithTopStrikingRateAndBoundary() throws IPLException {
+		try (Writer writer = new FileWriter("./src/test/resources/IPLBattingMaxRuns.json")) {
+			if (IPLCSVRuns == null || IPLCSVRuns.size() == 0) {
+				throw new IPLException("The file contains no data", IPLException.ExceptionType.NO_DATA);
+			}
+			Comparator<IPLMostRuns> iplComparator = Comparator.comparing(IPLMostRuns::getSixes)
+					.thenComparing(ipl -> ipl.fours).thenComparing(ipl -> ipl.strikeRate);
+			descendingSort(iplComparator);
+			String json = new Gson().toJson(IPLCSVRuns);
+			Gson gson = new GsonBuilder().setPrettyPrinting().create();
+			gson.toJson(IPLCSVRuns, writer);
+			return json;
+		} catch (RuntimeException | IOException e) {
+			throw new IPLException(e.getMessage(), IPLException.ExceptionType.FILE_OR_HEADER_PROBLEM);
+		}
+
+	}
+	
+	/**
+	 * 
+	 * @return json sorted with players on avg and strike rate
+	 * @throws IPLException
+	 */
+	public static String getPlayersWithTopStrikingRateAndAverage() throws IPLException {
+		 try (Writer writer = new FileWriter("./src/test/resources/IPLBattingSRandAvg.json")) {
+	            if (IPLCSVRuns == null || IPLCSVRuns.size() == 0) {
+	                throw new IPLException("the file contains no data", IPLException.ExceptionType.NO_DATA);
+	            }
+	            Comparator<IPLMostRuns> iplComparator = Comparator.comparing(IPLMostRuns::getAvg).thenComparing(ipl -> ipl.getStrikeRate());
+	            descendingSort(iplComparator);
+	            String json = new Gson().toJson(IPLCSVRuns);
+	            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+	            gson.toJson(IPLCSVRuns, writer);
+	            return json;
+
+	        } catch (RuntimeException | IOException e) {
+	            throw new IPLException(e.getMessage(),
+	                    IPLException.ExceptionType.FILE_OR_HEADER_PROBLEM);
+	        }
 
 
-    }
+	    }
 
 
 	/**
@@ -124,27 +170,5 @@ public class IPLAnalyser {
 			}
 		}
 	}
-
-	public static String getPlayersWithTopStrikingRateAndBoundary() throws IPLException {
-        try (Writer writer = new FileWriter("./src/test/resources/IPLBattingMaxRuns.json")) {
-            if (IPLCSVRuns == null || IPLCSVRuns.size() == 0) {
-                throw new IPLException("Empty!!!", IPLException.ExceptionType.NO_DATA);
-            }
-            Comparator<IPLMostRuns> iplComparator = Comparator.comparing(IPLMostRuns::getSixes).thenComparing(ipl -> ipl.fours).thenComparing(ipl -> ipl.strikeRate);
-            descendingSort(iplComparator);
-            String json = new Gson().toJson(IPLCSVRuns);
-            Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            gson.toJson(IPLCSVRuns, writer);
-            return json;
-
-        } catch (RuntimeException | IOException e) {
-            throw new IPLException(e.getMessage(),
-                    IPLException.ExceptionType.FILE_OR_HEADER_PROBLEM);
-        }
-
-
-    }
-
-
 	
 }
