@@ -208,4 +208,35 @@ public class IPLAnalyser {
 
     }
 
+	public static String getBowlersWithHighestStrikingRate() throws IPLException {
+		try (Writer writer = new FileWriter("./src/test/resources/IPLBowlingBestSR.json")) {
+            if (IPLCSVWickets == null || IPLCSVWickets.size() == 0) {
+                throw new IPLException("Empty!!!", IPLException.ExceptionType.NO_DATA);
+            }
+            Comparator<IPLMostWickets> iplComparator = Comparator.comparing(iplWickets -> iplWickets.strikeRate);
+            descendingSortWickets(iplComparator);
+            String json = new Gson().toJson(IPLCSVWickets);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(IPLCSVWickets, writer);
+            return json;
+
+        } catch (RuntimeException | IOException e) {
+            throw new IPLException(e.getMessage(),
+                    IPLException.ExceptionType.FILE_OR_HEADER_PROBLEM);
+        }
+    }
+
+	private static void descendingSortWickets(Comparator<IPLMostWickets> iplComparator) {
+		 for (int position = 0; position < IPLCSVWickets.size() - 1; position++) {
+	            for (int positionnext = 0; positionnext < IPLCSVWickets.size() - position - 1; positionnext++) {
+	                IPLMostWickets ipl1 = IPLCSVWickets.get(positionnext);
+	                IPLMostWickets ipl2 = IPLCSVWickets.get(positionnext + 1);
+	                if (iplComparator.compare(ipl1, ipl2) < 0) {
+	                    IPLCSVWickets.set(positionnext, ipl2);
+	                    IPLCSVWickets.set(positionnext + 1, ipl1);
+	                }
+	            }
+	        }
+	    }
+
 }
