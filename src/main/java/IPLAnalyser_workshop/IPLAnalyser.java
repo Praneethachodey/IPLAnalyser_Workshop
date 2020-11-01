@@ -355,4 +355,23 @@ public class IPLAnalyser {
         }
         return null;
     }
-}
+
+	public static String getBatsmanWithMaximumHundredsAndBestAverage() throws IPLException {
+		try (Writer writer = new FileWriter("./src/test/resources/IPLBowlingMostWickets.json")) {
+            if (IPLCSVRuns == null || IPLCSVRuns.size() == 0) {
+                throw new IPLException("The file contains no data", IPLException.ExceptionType.NO_DATA);
+            }
+            Comparator<IPLMostRuns> iplComparator = Comparator.comparing(IPLMostRuns::getAvg).thenComparing(IPLMostRuns::getHundreds);
+            descendingSort(iplComparator);
+            String json = new Gson().toJson(IPLCSVWickets);
+            Gson gson = new GsonBuilder().create();
+            gson.toJson(IPLCSVWickets, writer);
+            return json;
+        } catch (RuntimeException | IOException e) {
+            throw new IPLException(e.getMessage(),
+                    IPLException.ExceptionType.FILE_OR_HEADER_PROBLEM);
+        }
+    }
+
+	}
+
