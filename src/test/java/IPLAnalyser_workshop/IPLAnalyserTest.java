@@ -154,6 +154,19 @@ public class IPLAnalyserTest {
 
 	        }
 	    }
+	 
+	 @Test
+	    public void givenData_whenSortedOnBowlingAvg_ShouldReturnBowlerWithHighestStrikingRate() {
+	        try {
+	            IPLAnalyser.loadIPLDataWkts(IPL_CSV_WKTS_FILE_PATH);
+	            String sortedIPLData = IPLAnalyser.getBowlersWithTopStrikingRateAndAverage();
+	            IPLMostWickets[] iplRuns = new Gson().fromJson(sortedIPLData, IPLMostWickets[].class);
+	            Assert.assertEquals("Krishnappa Gowtham", iplRuns[0].player);
+	        } catch (IPLException e) {
+	            e.printStackTrace();
+
+	        }
+	    }
 
 
 }
