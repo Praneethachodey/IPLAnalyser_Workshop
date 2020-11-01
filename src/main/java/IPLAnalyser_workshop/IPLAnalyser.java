@@ -170,5 +170,30 @@ public class IPLAnalyser {
 			}
 		}
 	}
+
+	/**
+	 * 
+	 * @return json with players sorted on max runs and avg
+	 * @throws IPLException
+	 */
+	public static String getPlayersWithMaxRunsAndAverage() throws IPLException {
+		try (Writer writer = new FileWriter("./src/test/resources/IPLBattingSRandAvg.json")) {
+            if (IPLCSVRuns == null || IPLCSVRuns.size() == 0) {
+                throw new IPLException("The file contains no data", IPLException.ExceptionType.NO_DATA);
+            }
+            Comparator<IPLMostRuns> iplComparator = Comparator.comparing(IPLMostRuns::getRuns).thenComparing(census -> census.getAvg());
+            descendingSort(iplComparator);
+            String json = new Gson().toJson(IPLCSVRuns);
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            gson.toJson(IPLCSVRuns, writer);
+            return json;
+
+        } catch (RuntimeException | IOException e) {
+            throw new IPLException(e.getMessage(),
+                    IPLException.ExceptionType.FILE_OR_HEADER_PROBLEM);
+        }
+
+
+    }
 	
 }

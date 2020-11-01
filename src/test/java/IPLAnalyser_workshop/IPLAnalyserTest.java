@@ -85,8 +85,21 @@ public class IPLAnalyserTest {
 	            IPLAnalyser.loadIPLData(IPL_CSV_RUNS_FILE_PATH);
 	            String sortedIPLData = IPLAnalyser.getPlayersWithTopStrikingRateAndAverage();
 	            IPLMostRuns[] iplRuns = new Gson().fromJson(sortedIPLData, IPLMostRuns[].class);
-	            System.out.println(iplRuns[0].player);
 	            Assert.assertEquals("MS Dhoni", iplRuns[0].player);
+	        } catch (IPLException e) {
+	            e.printStackTrace();
+
+	        }
+	    }
+	 
+	 @Test
+	    public void givenData_whenSorted_ShouldReturnMaxRunsAndAverageCricketer() {
+	        try {
+
+	            IPLAnalyser.loadIPLData(IPL_CSV_RUNS_FILE_PATH);
+	            String sortedIPLData = IPLAnalyser.getPlayersWithMaxRunsAndAverage();
+	            IPLMostRuns[] iplRuns = new Gson().fromJson(sortedIPLData, IPLMostRuns[].class);
+	            Assert.assertEquals("David Warner ", iplRuns[0].player);
 	        } catch (IPLException e) {
 	            e.printStackTrace();
 
