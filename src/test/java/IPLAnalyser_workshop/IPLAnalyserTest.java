@@ -130,12 +130,25 @@ public class IPLAnalyserTest {
 	    }
 	 
 	 @Test
-	    public void givenData_whenSortedOnEconomyRate_ShouldReturnBowlerWithHighestEconomy() {
+	    public void givenData_whenSortedOnEconomyRate_ShouldReturnBowlerWithHighest() {
 	        try {
 	            IPLAnalyser.loadIPLDataWkts(IPL_CSV_WKTS_FILE_PATH);
 	            String sortedIPLData = IPLAnalyser.getBowlersWithHighestEconomy();
 	            IPLMostWickets[] iplRuns = new Gson().fromJson(sortedIPLData, IPLMostWickets[].class);
 	            Assert.assertEquals("Ben Cutting", iplRuns[0].player);
+	        } catch (IPLException e) {
+	            e.printStackTrace();
+
+	        }
+	    }
+	 
+	 @Test
+	    public void givenData_whenSortedOnStrikingRate_ShouldReturnBowlerWithHighest5w4w() {
+	        try {
+	            IPLAnalyser.loadIPLDataWkts(IPL_CSV_WKTS_FILE_PATH);
+	            String sortedIPLData = IPLAnalyser.getBowlersWithHighestStrikingRateAnd4w5w();
+	            IPLMostWickets[] iplRuns = new Gson().fromJson(sortedIPLData, IPLMostWickets[].class);
+	            Assert.assertEquals("Krishnappa Gowtham", iplRuns[0].player);
 	        } catch (IPLException e) {
 	            e.printStackTrace();
 
