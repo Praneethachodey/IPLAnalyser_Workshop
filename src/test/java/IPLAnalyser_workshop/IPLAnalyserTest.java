@@ -44,11 +44,26 @@ public class IPLAnalyserTest {
 
 	            IPLAnalyser.loadIPLData(IPL_CSV_RUNS_FILE_PATH);
 	            String sortCensusData = IPLAnalyser.getPlayersWithHighestStrikingRates();
-	            IPLMostRuns[] iplRuns = new Gson().fromJson(sortCensusData, IPLMostRuns[].class);
-	            Assert.assertEquals("Ishant Sharma", iplRuns[0].player);
+	            IPLMostRuns[] iplMostRuns = new Gson().fromJson(sortCensusData, IPLMostRuns[].class);
+	            Assert.assertEquals("Ishant Sharma", iplMostRuns[0].player);
 	        } catch (IPLException e) {
 	            e.printStackTrace();
 
 	        }
 	    }
+	 
+	 @Test
+	    public void givenData_whenSortedOn6sAnd4s_shouldReturnHighestPlayer() {
+	        try {
+
+	            IPLAnalyser.loadIPLData(IPL_CSV_RUNS_FILE_PATH);
+	            String sortedIPLData = IPLAnalyser.getPlayersWithTop6sAnd4s();
+	            IPLMostRuns[] iplMostRuns = new Gson().fromJson(sortedIPLData, IPLMostRuns[].class);
+	            Assert.assertEquals("Andre Russell", iplMostRuns[0].player);
+	        } catch (IPLException e) {
+	            e.printStackTrace();
+
+	        }
+	    }
+
 }
